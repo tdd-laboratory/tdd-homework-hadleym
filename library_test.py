@@ -40,5 +40,8 @@ class TestCase(unittest.TestCase):
     def test_no_dates(self):
         self.assert_extract("something 2015-13-25 not ending", library.dates_iso8601)
 
+    def test_word_dates(self):
+        self.assert_extract("something 25 Jan 2017.", library.dates_wordy, '25 Jan 2017')
+
 if __name__ == '__main__':
     unittest.main()
