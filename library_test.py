@@ -15,6 +15,8 @@ class TestCase(unittest.TestCase):
     # Helper function
     def assert_extract(self, text, extractors, *expected):
         actual = [x[1].group(0) for x in library.scan(text, extractors)]
+        print('actual: '+ str(actual))
+        print('expected: ' + str([x for x in expected]))
         self.assertEquals(str(actual), str([x for x in expected]))
 
     # First unit test; prove that if we scan NUM_CORPUS looking for mixed_ordinals,
@@ -30,6 +32,13 @@ class TestCase(unittest.TestCase):
     def test_no_integers(self):
         self.assert_extract("no integers", library.integers)
 
+    # Test 2015-07-25 format extracts as date
+    def test_dates(self):
+        self.assert_extract("something 2015-12-25.", library.dates_iso8601, '2015-12-25')
+
+    # Test that months greater than 12 are ignored as dates
+    def test_no_dates(self):
+        self.assert_extract("something 2015-13-25 not ending", library.dates_iso8601)
 
 if __name__ == '__main__':
     unittest.main()
